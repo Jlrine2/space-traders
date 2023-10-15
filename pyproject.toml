@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools"]
+
+[project]
+name = "space_traders_sdk"
+description = "A python SDK for the Space Traders API"
+readme = "README.md"
+dependencies = ["requests ~= 2.31.0", "requests-ratelimiter ~= 0.4.2", "pydantic ~= 2.4.2"]
+version = "0.0.1"
+[project.optional-dependencies]
+dev =["datamodel-code-generator ~= 0.22.1"]

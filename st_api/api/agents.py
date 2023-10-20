@@ -1,4 +1,4 @@
-from .base_api import BaseApi
+from .base_api import BaseApi, Collection
 from ..models.Agent import Agent
 
 
@@ -10,7 +10,7 @@ class AgentApi(BaseApi):
         resp = self._get("my/agent")
         return self._parse(resp, Agent)
 
-    def list_agents(self, limit=10, page=1) -> list[Agent]:
+    def list_agents(self, limit=10, page=1) -> Collection[Agent]:
         resp = self._get(f"agents", {"limit": limit, "page": page})
         return self._parse(resp, Agent)
 

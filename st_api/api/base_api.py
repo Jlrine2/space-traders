@@ -1,4 +1,10 @@
+import json
+from typing import Any
+
+from pydantic import GetCoreSchemaHandler
+from pydantic_core import CoreSchema, core_schema
 from requests.exceptions import HTTPError
+import pyjq
 
 
 class SpaceTradersError(BaseException):
@@ -13,6 +19,26 @@ def _handle_http_error(resp):
         raise SpaceTradersError(
             f"Space traders error: {error['code']}\n {error['message']}\n{error['data']}"
         )
+    
+    
+def _dictify(model):
+    return json.loads(model.model_dump_json())
+
+
+class Collection(list):
+    def __init__(self, iterable, model_type):
+        self.model_type = model_type
+        super().__init__(iterable)
+
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source_type: Any, handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
+        return core_schema.no_info_after_validator_function(cls, handler(list))
+
+    def select(self, q):
+        res = pyjq.all(f".[] | select({q})", [_dictify(m) for m in self])
+        return Collection((self.model_type(**m) for m in res), self.model_type)
 
 
 class BaseApi:
@@ -51,5 +77,5 @@ class BaseApi:
             for n in nesting:
                 j = j[nesting]
         if isinstance(data, list):
-            return [model(**x) for x in data]
+            return Collection((model(**x) for x in data), model)
         return model(**resp.json()["data"])

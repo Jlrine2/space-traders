@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from .base_api import BaseApi
+from .base_api import BaseApi, Collection
 from ..models.Agent import Agent
 from ..models.Chart import Chart
 from ..models.Cooldown import Cooldown
@@ -70,17 +70,17 @@ class AgentCargoTransaction(BaseModel):
 
 class CooldownSystems(BaseModel):
     cooldown: Cooldown
-    systems: list[System]
+    systems: Collection[System]
 
 
 class CooldownWaypoints(BaseModel):
     cooldown: Cooldown
-    waypoints: list[Waypoint]
+    waypoints: Collection[Waypoint]
 
 
 class CooldownShips(BaseModel):
     cooldown: Cooldown
-    waypoints: list[Ship]
+    waypoints: Collection[Ship]
 
 
 class AgentFuelTransaction(BaseModel):
@@ -91,7 +91,7 @@ class AgentFuelTransaction(BaseModel):
 
 class AgentMountsCargoTransaction(BaseModel):
     agent: Agent
-    mounts: list[ShipMount]
+    mounts: Collection[ShipMount]
     cargo: ShipCargo
     transaction: MarketTransaction
 
@@ -100,7 +100,7 @@ class FleetApi(BaseApi):
     def __init__(self, session, base_url, meta_callback) -> None:
         super().__init__(session, base_url, meta_callback=meta_callback)
 
-    def list_ships(self, limit=10, page=1) -> list[Ship]:
+    def list_ships(self, limit=10, page=1) -> Collection[Ship]:
         resp = self._get(f"my/ships", {"limit": limit, "page": page})
         return self._parse(resp, Ship)
 

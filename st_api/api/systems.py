@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from .base_api import BaseApi
+from .base_api import BaseApi, Collection
 from ..models.System import System
 from ..models.JumpGate import JumpGate
 from ..models.Market import Market
@@ -12,7 +12,7 @@ class SystemsApi(BaseApi):
     def __init__(self, session, base_url, meta_callback) -> None:
         super().__init__(session, base_url, meta_callback=meta_callback)
 
-    def list_systems(self, limit=10, page=1) -> list[System]:
+    def list_systems(self, limit=10, page=1) -> Collection[System]:
         resp = self._get(f"systems", {"limit": limit, "page": page})
         return self._parse(resp, System)
 
@@ -20,7 +20,7 @@ class SystemsApi(BaseApi):
         resp = self._get(f"systems/{symbol}")
         return self._parse(resp, System)
 
-    def list_waypoints_in_system(self, symbol, limit=10, page=1) -> list[Waypoint]:
+    def list_waypoints_in_system(self, symbol, limit=10, page=1) -> Collection[Waypoint]:
         resp = self._get(f"systems/{symbol}/waypoints", {"limit": limit, "page": page})
         return self._parse(resp, Waypoint)
 

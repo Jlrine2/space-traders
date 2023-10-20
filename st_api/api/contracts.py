@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from .base_api import BaseApi
+from .base_api import BaseApi, Collection
 from ..models.Agent import Agent
 from ..models.Contract import Contract
 from ..models.Ship import Ship
@@ -22,7 +22,7 @@ class ContractsApi(BaseApi):
     def __init__(self, session, base_url, meta_callback) -> None:
         super().__init__(session, base_url, meta_callback=meta_callback)
 
-    def list_contracts(self, limit=10, page=1) -> list[Contract]:
+    def list_contracts(self, limit=10, page=1) -> Collection[Contract]:
         resp = self._get(f"my/contracts", {"limit": limit, "page": page})
         return self._parse(resp, Contract)
 

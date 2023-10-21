@@ -1,3 +1,3 @@
 from .client import Client
-
-__all__ = ["Client"]
+from .util.jq import jq
+__all__ = ["Client", "jq"]

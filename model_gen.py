@@ -2,7 +2,7 @@ import os
 
 from pathlib import Path
 
-from datamodel_code_generator import InputFileType, generate, DataModelType
+from datamodel_code_generator import InputFileType, generate, DataModelType, LiteralType
 
 IN_PATH = "api-docs/models"
 OUT_PATH = "st_api/models"
@@ -24,6 +24,7 @@ for f in Path(IN_PATH).iterdir():
         output=out,
         output_model_type=DataModelType.PydanticV2BaseModel,
         class_name=f.stem,
+        enum_field_as_literal=LiteralType.All,
     )
     os.chdir(p)
 

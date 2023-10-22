@@ -24,8 +24,8 @@ class SystemsApi(BaseApi):
         resp = self._get(f"systems/{symbol}/waypoints", {"limit": limit, "page": page})
         return self._parse(resp, Waypoint)
 
-    def get_waypoint(self, symbol) -> Waypoint:
-        resp = self._get(f"systems/{symbol}/waypoints/{symbol}")
+    def get_waypoint(self, system_symbol, waypoint_symbol) -> Waypoint:
+        resp = self._get(f"systems/{system_symbol}/waypoints/{waypoint_symbol}")
         return self._parse(resp, Waypoint)
 
     def get_market(self, system, waypoint) -> Market:

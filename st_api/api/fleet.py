@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 from .base_api import BaseApi
@@ -138,15 +140,15 @@ class FleetApi(BaseApi):
 
     def dock_ship(self, ship_symbol: str) -> ShipNav:
         resp = self._post(f"my/ships/{ship_symbol}/dock")
-        return self._parse(resp, ShipNav)
+        return self._parse(resp, ShipNav, nesting=['nav'])
 
     def create_survey(self, ship_symbol: str) -> CooldownSurvey:
         resp = self._post(f"my/ships/{ship_symbol}/chart")
         return self._parse(resp, CooldownSurvey)
 
-    def extract_resources(self, ship_symbol: str, survey: Survey) -> CooldownExtraction:
+    def extract_resources(self, ship_symbol: str) -> CooldownExtraction:
         resp = self._post(
-            f"my/ships/{ship_symbol}/extract/survey", survey.model_dump_json()
+            f"my/ships/{ship_symbol}/extract"
         )
         return self._parse(resp, CooldownExtraction)
 

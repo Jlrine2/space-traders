@@ -1,3 +1,6 @@
+import logging
+
+import requests
 from requests.exceptions import HTTPError
 
 
@@ -25,21 +28,30 @@ class BaseApi:
         if query_params is None:
             query_params = {}
         resp = self.session.get(f"{self.base_url}/{url}", params=query_params)
-        resp.raise_for_status()
+        try:
+            resp.raise_for_status()
+        except requests.HTTPError as e:
+            logging.error(f"Error performing GET {url}\n{resp.content}")
         return resp
 
     def _post(self, url, body=None):
         if body is None:
             body = {}
         resp = self.session.post(f"{self.base_url}/{url}", json=body)
-        resp.raise_for_status()
+        try:
+            resp.raise_for_status()
+        except requests.HTTPError as e:
+            logging.error(f"Error performing GET {url}\n{resp.content}")
         return resp
 
     def _patch(self, url, body=None):
         if body is None:
             body = {}
         resp = self.session.patch(f"{self.base_url}/{url}", json=body)
-        resp.raise_for_status()
+        try:
+            resp.raise_for_status()
+        except requests.HTTPError as e:
+            logging.error(f"Error performing GET {url}\n{resp.content}")
         return resp
 
     def _parse(self, resp, model, nesting=None):

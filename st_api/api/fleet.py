@@ -120,7 +120,7 @@ class FleetApi(BaseApi):
 
     def orbit_ship(self, ship_symbol: str) -> ShipNav:
         resp = self._post(f"my/ships/{ship_symbol}/orbit")
-        return self._parse(resp, ShipNav)
+        return self._parse(resp, ShipNav, nesting=["nav"])
 
     def ship_refine(
         self, ship_symbol: str, produce: str

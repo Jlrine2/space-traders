@@ -49,7 +49,7 @@ class BaseApi:
             self.meta_callback(j["meta"])
         if nesting:
             for n in nesting:
-                j = j[nesting]
+                data = data[n]
         if isinstance(data, list):
             return [model(**x) for x in data]
-        return model(**resp.json()["data"])
+        return model(**data)

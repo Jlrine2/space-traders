@@ -7,7 +7,7 @@ def _default_callback(meta):
 
 
 def _get_session() -> Session:
-    s = LimiterSession(per_second=2)
+    s = LimiterSession(per_second=1)
     return s
 
 
